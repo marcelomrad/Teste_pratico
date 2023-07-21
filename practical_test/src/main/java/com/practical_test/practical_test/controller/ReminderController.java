@@ -1,9 +1,10 @@
 package com.practical_test.practical_test.controller;
 
-import com.practical_test.practical_test.reminder.Reminder;
-import com.practical_test.practical_test.reminder.ReminderRepository;
 import com.practical_test.practical_test.reminder.ReminderResponseDTO;
 import com.practical_test.practical_test.reminder.ReminderRequestDTO;
+import com.practical_test.practical_test.service.ReminderService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,13 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
-
-
-
 
 import java.util.List;
 
@@ -28,25 +25,23 @@ import java.util.List;
 public class ReminderController {
 
     @Autowired
-    private ReminderRepository reminderRepository;
+    private  ReminderService reminderService;
 
     @PostMapping("/create")
-    public void saveReminder (@RequestBody ReminderRequestDTO data){
-        Reminder reminderData = new Reminder(data);
-        reminderRepository.save(reminderData);
+    public ResponseEntity<String> create(@RequestBody ReminderRequestDTO data) {
+        reminderService.create(data);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Lembrete criado com sucesso!");
     }
-    
-    @GetMapping("/all")
-    public ResponseEntity<List<ReminderResponseDTO>> getAll (){
 
-        List<ReminderResponseDTO> reminders = reminderRepository.findAll().stream().map(ReminderResponseDTO::new).toList();
-        
+    @GetMapping("/all")
+    public ResponseEntity<List<ReminderResponseDTO>> getAll() {
+        List<ReminderResponseDTO> reminders = reminderService.getAll();
         return ResponseEntity.status(HttpStatus.OK).body(reminders);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteReminder (@PathVariable Long id){
-        reminderRepository.deleteById(id);
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        reminderService.deleteById(id);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Lembrete deletado com sucesso!");
     }
 }
-
