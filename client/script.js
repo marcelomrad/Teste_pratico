@@ -1,14 +1,5 @@
 const url = 'http://localhost:8080/api/reminders';
 
-// Função para exibir as mensagens de erro
-function showError(message) {
-    const errorElement = document.getElementById('error-message');
-    if (errorElement) {
-        errorElement.textContent = message || '';
-    }
-}
-  
-
 // Função para criar um novo lembrete
 async function createReminder() {
   const nameInput = document.getElementById('name');
@@ -19,26 +10,17 @@ async function createReminder() {
 
   try {
     const response = await axios.post(`${url}/create`, { name, date });
-    const reminder = response.data;
 
-    // Limpar campos do formulário
+    await showMessage(response.data);
+
     nameInput.value = '';
     dateInput.value = '';
 
-    // Chamar função para atualizar a lista de lembretes
-    fetchReminders();
-    
+    await fetchReminders();
+
   } catch (error) {
-    if (error.response) {
-      // O servidor retornou uma resposta com status de erro
-      showError(error.response.data.message);
-    } else if (error.request) {
-      // A requisição foi feita, mas não houve resposta do servidor
-      showError('Erro ao se comunicar com o servidor');
-    } else {
-      // Ocorreu algum erro ao fazer a requisição
-      showError('Erro ao processar a requisição');
-    }
+   const erroMessage = error.response.data;
+   showMessage(erroMessage);
   }
 }
 
@@ -46,25 +28,24 @@ async function createReminder() {
 async function deleteReminder(id) {
   try {
     await axios.delete(`${url}/delete/${id}`);
-    // Chamar função para atualizar a lista de lembretes
-    fetchReminders();
+    await showMessage("Lembrete excluído com sucesso!");
+
+    // Atualize a lista de lembretes após a exclusão
+    await fetchReminders();
+
   } catch (error) {
-    if (error.response) {
-      // O servidor retornou uma resposta com status de erro
-      showError(error.response.data.message);
-    } else if (error.request) {
-      // A requisição foi feita, mas não houve resposta do servidor
-      showError('Erro ao se comunicar com o servidor');
-    } else {
-      // Ocorreu algum erro ao fazer a requisição
-      showError('Erro ao processar a requisição');
-    }
+    const errorMessage = error.response.data;
+    showMessage(errorMessage);
   }
 }
 
 
+
+
+
 // Função para exibir os lembretes na página
 function showReminders(reminders) {
+  console.log(reminders)
   const listElement = document.getElementById('reminder-list');
   if (!listElement) {
     console.error('Elemento #reminder-list não encontrado');
@@ -85,10 +66,6 @@ function showReminders(reminders) {
   });
 }
 
-
-
-
-
 // Função para buscar e exibir a lista de lembretes
 async function fetchReminders() {
   try {
@@ -96,16 +73,42 @@ async function fetchReminders() {
     const reminders = response.data;
     showReminders(reminders);
   } catch (error) {
-    if (error.response) {
-      // O servidor retornou uma resposta com status de erro
-      showError(error.response.data.message);
-    } else if (error.request) {
-      // A requisição foi feita, mas não houve resposta do servidor
-      showError('Erro ao se comunicar com o servidor');
-    } else {
-      // Ocorreu algum erro ao fazer a requisição
-      showError('Erro ao processar a requisição');
+    const errorMessage = error.response.data;
+    console.log(errorMessage);
+    showReminders([]);
+  }
+}
+
+async function showMessage(message) {
+  return new Promise((resolve) => {
+    const errorElement = document.getElementById('error-message');
+    if (errorElement) {
+      errorElement.textContent = message;
     }
+    showModal(message);
+
+    setTimeout(() => {
+      closeModal();
+      resolve();
+    }, 1000);
+  });
+}
+
+
+
+function showModal(message) {
+  const modal = document.getElementById('modal');
+  const modalMessage = document.getElementById('modal-message');
+  if (modal && modalMessage) {
+    modalMessage.textContent = message;
+    modal.style.display = 'block';
+  }
+}
+
+function closeModal() {
+  const modal = document.getElementById('modal');
+  if (modal) {
+    modal.style.display = 'none';
   }
 }
 
@@ -119,39 +122,44 @@ function formatDate(dateString) {
 }
 
 
-
 // Função para inicializar o script após o carregamento da página
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('reminder-form');
-    const errorElement = document.getElementById('error-message');
+  const form = document.getElementById('reminder-form');
+  const errorElement = document.getElementById('error-message');
+  const closeModalButton = document.getElementById('close-modal-button');
 
-    if (form) {
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
-            createReminder();
-        });
-    }
+  if (form) {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      createReminder();
+    });
+  }
 
-    // Remover a mensagem de erro ao digitar nos campos
-    const nameInput = document.getElementById('name');
-    const dateInput = document.getElementById('date');
+  // Remover a mensagem de erro ao digitar nos campos
+  const nameInput = document.getElementById('name');
+  const dateInput = document.getElementById('date');
 
-    if (nameInput) {
-        nameInput.addEventListener('input', () => {
-            if (errorElement) {
-                errorElement.textContent = '';
-            }
-        });
-    }
+  if (nameInput) {
+    nameInput.addEventListener('input', () => {
+      if (errorElement) {
+        errorElement.textContent = '';
+      }
+    });
+  }
 
-    if (dateInput) {
-        dateInput.addEventListener('input', () => {
-            if (errorElement) {
-                errorElement.textContent = '';
-            }
-        });
-    }
+  if (dateInput) {
+    dateInput.addEventListener('input', () => {
+      if (errorElement) {
+        errorElement.textContent = '';
+      }
+    });
+  }
 
-    // Buscar e exibir a lista de lembretes
-    fetchReminders();
+  // Adicionar evento de clique ao botão de fechar o modal
+  if (closeModalButton) {
+    closeModalButton.addEventListener('click', closeModal);
+  }
+
+  fetchReminders();
 });
+
