@@ -1,0 +1,6 @@
+CREATE TABLE reminder (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    date DATE NOT NULL
+);
+
