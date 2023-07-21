@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/reminders")
@@ -37,6 +38,12 @@ public class ReminderController {
     public ResponseEntity<List<ReminderResponseDTO>> getAll() {
         List<ReminderResponseDTO> reminders = reminderService.getAll();
         return ResponseEntity.status(HttpStatus.OK).body(reminders);
+    }
+
+    @GetMapping("/grouped")
+    public ResponseEntity<List<Map<String, Object>>> getAllGrouped() {
+        List<Map<String, Object>> groupedReminders = reminderService.getAllGrouped();
+        return ResponseEntity.status(HttpStatus.OK).body(groupedReminders);
     }
 
     @DeleteMapping("/delete/{id}")
