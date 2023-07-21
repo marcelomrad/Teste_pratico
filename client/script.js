@@ -45,7 +45,6 @@ async function deleteReminder(id) {
 
 // Função para exibir os lembretes na página
 function showReminders(reminders) {
-  console.log(reminders)
   const listElement = document.getElementById('reminder-list');
   if (!listElement) {
     console.error('Elemento #reminder-list não encontrado');

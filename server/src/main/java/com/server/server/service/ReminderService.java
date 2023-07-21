@@ -64,7 +64,7 @@ public class ReminderService {
     }
 
     public List<Map<String, Object>> getAllGrouped() {
-        List<ReminderGroup> groups = reminderGroupRepository.findAll();
+        List<ReminderGroup> groups = reminderGroupRepository.findAllByOrderByGroupDateAsc();
     
         if (groups.isEmpty()) {
             throw new BadRequestException("Não há lembretes cadastrados");
