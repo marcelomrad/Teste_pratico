@@ -1,9 +1,9 @@
 package com.practical_test.practical_test.controller;
 
-import com.lembrete.lembrete.reminder.Reminder;
-import com.lembrete.lembrete.reminder.ReminderRepository;
-import com.lembrete.lembrete.reminder.ReminderResponseDTO;
-import com.lembrete.lembrete.reminder.ReminderRequestDTO;
+import com.practical_test.practical_test.reminder.Reminder;
+import com.practical_test.practical_test.reminder.ReminderRepository;
+import com.practical_test.practical_test.reminder.ReminderResponseDTO;
+import com.practical_test.practical_test.reminder.ReminderRequestDTO;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +25,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/reminders")
-public class LembreteController {
+public class ReminderController {
 
     @Autowired
     private ReminderRepository reminderRepository;
