@@ -67,35 +67,52 @@ public class ReminderService {
 
     public List<Map<String, Object>> getAllGrouped() {
         List<ReminderGroup> groups = reminderGroupRepository.findAll();
-
-        if(groups.isEmpty()){
+    
+        if (groups.isEmpty()) {
             throw new BadRequestException("Não há lembretes cadastrados");
         }
-
+    
         List<Map<String, Object>> result = new ArrayList<>();
-
+    
         for (ReminderGroup group : groups) {
             Map<String, Object> groupData = new HashMap<>();
             groupData.put("groupDate", group.getGroupDate());
-            groupData.put("reminders", group.getReminders().stream().map(Reminder::getName).collect(Collectors.toList()));
+            
+            List<Map<String, Object>> reminders = group.getReminders().stream()
+                .map(reminder -> {
+                    Map<String, Object> reminderData = new HashMap<>();
+                    reminderData.put("id", reminder.getId());
+                    reminderData.put("name", reminder.getName());
+                    return reminderData;
+                })
+                .collect(Collectors.toList());
+            
+            groupData.put("reminders", reminders);
             result.add(groupData);
         }
-
+    
         return result;
     }
+    
 
     public void deleteById(Long id) {
         Reminder reminder = reminderRepository.findById(id)
-            .orElseThrow(() -> new BadRequestException("Lembrete não encontrado"));
-
+                .orElseThrow(() -> new BadRequestException("Lembrete não encontrado"));
+    
         ReminderGroup group = reminder.getGroup();
         if (group != null) {
             group.removeReminder(reminder);
             reminderGroupRepository.save(group);
+    
+            // Verificar se o grupo não tem mais lembretes e excluir o grupo se estiver vazio
+            if (group.getReminders().isEmpty()) {
+                reminderGroupRepository.deleteById(group.getId());
+            }
         }
-
+    
         reminderRepository.deleteById(id);
     }
+    
 
     private void validateDate(ReminderRequestDTO data) {
         if (data.name() == null || data.name().isEmpty()) {
@@ -106,13 +123,7 @@ public class ReminderService {
             throw new BadRequestException("O campo data é obrigatório");
         }
         
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        try {
-            dateFormatter.parse(data.date().toString());
-        } catch (DateTimeParseException e) {
-            throw new BadRequestException("O campo data não está no formato correto (yyyy-MM-dd)");
-        }
-    
+      
         LocalDate currentDate = LocalDate.now();
         LocalDate reminderDate = data.date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     

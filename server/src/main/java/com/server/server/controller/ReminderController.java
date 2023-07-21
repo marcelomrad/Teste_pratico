@@ -40,7 +40,7 @@ public class ReminderController {
         return ResponseEntity.status(HttpStatus.OK).body(reminders);
     }
 
-    @GetMapping("/grouped")
+    @GetMapping("/list")
     public ResponseEntity<List<Map<String, Object>>> getAllGrouped() {
         List<Map<String, Object>> groupedReminders = reminderService.getAllGrouped();
         return ResponseEntity.status(HttpStatus.OK).body(groupedReminders);

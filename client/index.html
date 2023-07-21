@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aplicação de Lembretes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Lembretes</h1>
+        <div class="form">
+            <label for="nome">Nome:</label>
+            <input type="text" id="name" placeholder="Digite o nome do lembrete">
+            <label for="data">Data:</label>
+            <input type="date" id="date">
+            <button onclick="createReminder()">Criar</button>
+        </div>
+        <div class="list">
+            <h2>Lista de Lembretes</h2>
+            <ul id="reminder-list"></ul>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
