@@ -1,9 +1,9 @@
-package com.practical_test.practical_test.reminder;
+package com.server.server.reminder;
 
 import jakarta.persistence.*;
 import java.util.Date;
 
-import com.practical_test.practical_test.reminder_group.ReminderGroup;
+import com.server.server.reminder_group.ReminderGroup;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

@@ -1,4 +1,4 @@
-package com.practical_test.practical_test.exception;
+package com.server.server.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

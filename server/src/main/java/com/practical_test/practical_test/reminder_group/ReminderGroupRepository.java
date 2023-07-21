@@ -1,4 +1,4 @@
-package com.practical_test.practical_test.reminder_group;
+package com.server.server.reminder_group;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

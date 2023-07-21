@@ -1,4 +1,4 @@
-package com.practical_test.practical_test.reminder;
+package com.server.server.reminder;
 
 import java.util.Date;
 

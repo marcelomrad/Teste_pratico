@@ -1,15 +1,15 @@
-package com.practical_test.practical_test.service;
+package com.server.server.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
-import com.practical_test.practical_test.reminder.Reminder;
-import com.practical_test.practical_test.reminder.ReminderRepository;
-import com.practical_test.practical_test.reminder.ReminderResponseDTO;
-import com.practical_test.practical_test.reminder.ReminderRequestDTO;
-import com.practical_test.practical_test.reminder_group.ReminderGroup;
-import com.practical_test.practical_test.reminder_group.ReminderGroupRepository;
+import com.server.server.reminder.Reminder;
+import com.server.server.reminder.ReminderRepository;
+import com.server.server.reminder.ReminderResponseDTO;
+import com.server.server.reminder.ReminderRequestDTO;
+import com.server.server.reminder_group.ReminderGroup;
+import com.server.server.reminder_group.ReminderGroupRepository;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.practical_test.practical_test.exception.BadRequestException;
+import com.server.server.exception.BadRequestException;
 
 @Service
 public class ReminderService {
@@ -106,12 +106,12 @@ public class ReminderService {
             throw new BadRequestException("O campo data é obrigatório");
         }
         
-        // DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        // try {
-        //     dateFormatter.parse(data.date().toString());
-        // } catch (DateTimeParseException e) {
-        //     throw new IllegalArgumentException("O campo data não está no formato correto (yyyy-MM-dd)");
-        // }
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        try {
+            dateFormatter.parse(data.date().toString());
+        } catch (DateTimeParseException e) {
+            throw new BadRequestException("O campo data não está no formato correto (yyyy-MM-dd)");
+        }
     
         LocalDate currentDate = LocalDate.now();
         LocalDate reminderDate = data.date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();

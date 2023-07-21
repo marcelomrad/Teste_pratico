@@ -1,8 +1,8 @@
-package com.practical_test.practical_test.controller;
+package com.server.server.controller;
 
-import com.practical_test.practical_test.reminder.ReminderResponseDTO;
-import com.practical_test.practical_test.reminder.ReminderRequestDTO;
-import com.practical_test.practical_test.service.ReminderService;
+import com.server.server.reminder.ReminderResponseDTO;
+import com.server.server.reminder.ReminderRequestDTO;
+import com.server.server.service.ReminderService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
