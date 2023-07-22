@@ -7,7 +7,7 @@ import java.util.List;
 
 
 public interface ReminderGroupRepository extends JpaRepository<ReminderGroup, Long> {
-    
+
     ReminderGroup findByGroupDate(LocalDate groupDate);
     
     List<ReminderGroup> findAllByOrderByGroupDateAsc();

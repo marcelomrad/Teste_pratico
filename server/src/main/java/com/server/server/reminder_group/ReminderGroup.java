@@ -4,6 +4,7 @@ import com.server.server.reminder.Reminder;
 
 
 import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -45,4 +46,5 @@ public class ReminderGroup {
         reminders.remove(reminder);
         reminder.setGroup(null);
     }
+
 }

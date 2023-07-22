@@ -108,7 +108,6 @@ public class ReminderService {
         LocalDate currentDate = LocalDate.now();
         LocalDate reminderDate = data.date();
     
-        // Verifica se a data do lembrete é anterior a data atual
         if (reminderDate.isBefore(currentDate)) {
             throw new BadRequestException("A data do lembrete não pode ser anterior à data atual");
         }
