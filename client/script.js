@@ -107,10 +107,10 @@ function closeModal() {
 function formatDate(date) {
   // Divide a data em ano, mês e dia
   const [year, month, day] = date.split('-');
-  
+
   // Formata a data no formato desejado
   const formattedDate = `${day}-${month}-${year}`;
-  
+
   return formattedDate;
 }
 
