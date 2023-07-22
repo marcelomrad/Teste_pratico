@@ -1,8 +1,8 @@
 package com.server.server.reminder;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-public record ReminderRequestDTO(String name, Date date) {
+public record ReminderRequestDTO(String name, LocalDate date) {
     
 
 }

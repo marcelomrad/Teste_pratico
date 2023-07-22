@@ -12,9 +12,7 @@ import com.server.server.reminder_group.ReminderGroup;
 import com.server.server.reminder_group.ReminderGroupRepository;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,7 +121,7 @@ public class ReminderService {
         
       
         LocalDate currentDate = LocalDate.now();
-        LocalDate reminderDate = data.date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate reminderDate = data.date();
     
         // Verifica se a data do lembrete é anterior a data atual
         if (reminderDate.isBefore(currentDate)) {
@@ -131,8 +129,8 @@ public class ReminderService {
         }
     }
 
-    private ReminderGroup findOrCreateGroupForDate(Date date) {
-        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    private ReminderGroup findOrCreateGroupForDate(LocalDate date) {
+        LocalDate localDate = date;
         ReminderGroup group = reminderGroupRepository.findByGroupDate(localDate);
         if (group == null) {
             group = new ReminderGroup(localDate);

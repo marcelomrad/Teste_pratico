@@ -1,12 +1,12 @@
 const url = 'http://localhost:8080/api/reminders';
 
-// Função para criar um novo lembrete
 async function createReminder() {
   const nameInput = document.getElementById('name');
   const dateInput = document.getElementById('date');
 
   const name = nameInput.value;
   const date = dateInput.value;
+
 
   try {
     const response = await axios.post(`${url}/create`, { name, date });
@@ -19,18 +19,16 @@ async function createReminder() {
     await fetchReminders();
 
   } catch (error) {
-   const erroMessage = error.response.data;
-   showMessage(erroMessage);
+    const erroMessage = error.response.data;
+    showMessage(erroMessage);
   }
 }
 
-// Função para deletar um lembrete
 async function deleteReminder(id) {
   try {
     await axios.delete(`${url}/delete/${id}`);
     await showMessage("Lembrete excluído com sucesso!");
 
-    // Atualize a lista de lembretes após a exclusão
     await fetchReminders();
 
   } catch (error) {
@@ -40,10 +38,6 @@ async function deleteReminder(id) {
 }
 
 
-
-
-
-// Função para exibir os lembretes na página
 function showReminders(reminders) {
   const listElement = document.getElementById('reminder-list');
   if (!listElement) {
@@ -73,8 +67,8 @@ async function fetchReminders() {
     showReminders(reminders);
   } catch (error) {
     const errorMessage = error.response.data;
-    console.log(errorMessage);
     showReminders([]);
+    showMessage(errorMessage);
   }
 }
 
@@ -89,10 +83,9 @@ async function showMessage(message) {
     setTimeout(() => {
       closeModal();
       resolve();
-    }, 1000);
+    }, 1500);
   });
 }
-
 
 
 function showModal(message) {
@@ -111,13 +104,14 @@ function closeModal() {
   }
 }
 
-// Função para formatar a data no formato DD/MM/YYYY
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  const day = date.getDate().toString().padStart(2, '0');
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
+function formatDate(date) {
+  // Divide a data em ano, mês e dia
+  const [year, month, day] = date.split('-');
+  
+  // Formata a data no formato desejado
+  const formattedDate = `${day}-${month}-${year}`;
+  
+  return formattedDate;
 }
 
 

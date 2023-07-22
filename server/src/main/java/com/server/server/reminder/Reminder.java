@@ -1,7 +1,7 @@
 package com.server.server.reminder;
 
 import jakarta.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 import com.server.server.reminder_group.ReminderGroup;
 
@@ -27,7 +27,7 @@ public class Reminder {
     private String name;
 
     @Column(name="date", nullable = false)
-    private Date date;
+    private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
