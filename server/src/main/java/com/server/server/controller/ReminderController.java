@@ -1,6 +1,5 @@
 package com.server.server.controller;
 
-import com.server.server.reminder.ReminderResponseDTO;
 import com.server.server.reminder.ReminderRequestDTO;
 import com.server.server.service.ReminderService;
 
@@ -34,15 +33,9 @@ public class ReminderController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Lembrete criado com sucesso!");
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<ReminderResponseDTO>> getAll() {
-        List<ReminderResponseDTO> reminders = reminderService.getAll();
-        return ResponseEntity.status(HttpStatus.OK).body(reminders);
-    }
-
     @GetMapping("/list")
-    public ResponseEntity<List<Map<String, Object>>> getAllGrouped() {
-        List<Map<String, Object>> groupedReminders = reminderService.getAllGrouped();
+    public ResponseEntity<List<Map<String, Object>>> getAll() {
+        List<Map<String, Object>> groupedReminders = reminderService.getAll();
         return ResponseEntity.status(HttpStatus.OK).body(groupedReminders);
     }
 

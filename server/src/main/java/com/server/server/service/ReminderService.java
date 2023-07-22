@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.server.server.reminder.Reminder;
 import com.server.server.reminder.ReminderRepository;
-import com.server.server.reminder.ReminderResponseDTO;
 import com.server.server.reminder.ReminderRequestDTO;
 import com.server.server.reminder_group.ReminderGroup;
 import com.server.server.reminder_group.ReminderGroupRepository;
@@ -47,21 +46,7 @@ public class ReminderService {
 
     }
 
-
-    public List<ReminderResponseDTO> getAll() {
-        List<ReminderGroup> groups = reminderGroupRepository.findAllByOrderByGroupDateAsc();
-
-        if(groups.isEmpty()){
-            throw new BadRequestException("Não há lembretes cadastrados");
-        }
-
-        return groups.stream()
-                .flatMap(group -> group.getReminders().stream())
-                .map(ReminderResponseDTO::new)
-                .collect(Collectors.toList());
-    }
-
-    public List<Map<String, Object>> getAllGrouped() {
+    public List<Map<String, Object>> getAll() {
         List<ReminderGroup> groups = reminderGroupRepository.findAllByOrderByGroupDateAsc();
     
         if (groups.isEmpty()) {
@@ -130,10 +115,9 @@ public class ReminderService {
     }
 
     private ReminderGroup findOrCreateGroupForDate(LocalDate date) {
-        LocalDate localDate = date;
-        ReminderGroup group = reminderGroupRepository.findByGroupDate(localDate);
+        ReminderGroup group = reminderGroupRepository.findByGroupDate(date);
         if (group == null) {
-            group = new ReminderGroup(localDate);
+            group = new ReminderGroup(date);
         }
         return group;
     }
